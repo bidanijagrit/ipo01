@@ -78,21 +78,47 @@
       position: relative;
       z-index: 1;
     }
-    .splash-logo-dot {
-      width: 44px;
-      height: 44px;
-      border-radius: 16px;
-      margin: 0 auto 12px;
+    .splash-logo-img,
+    .brand-logo-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      object-fit: cover;
+      border: 1px solid rgba(148,163,184,0.5);
+      box-shadow: 0 0 26px rgba(52,211,153,0.6);
+      background: #0f172a;
+      display: inline-block;
+    }
+    .brand-logo-img {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      box-shadow: 0 0 16px rgba(52,211,153,0.45);
+    }
+    .logo-fallback {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
       background: conic-gradient(from 180deg, #22c55e, #22c55e, #f97316, #facc15, #22c55e);
-      box-shadow: 0 0 36px rgba(52,211,153,0.9);
+      box-shadow: 0 0 26px rgba(52,211,153,0.6);
       position: relative;
     }
-    .splash-logo-dot::after {
+    .logo-fallback::after {
       content: "";
       position: absolute;
-      inset: 7px;
-      border-radius: 12px;
+      inset: 10px;
+      border-radius: 14px;
       background: radial-gradient(circle at top, rgba(15,23,42,0.9), rgba(15,23,42,1));
+    }
+    .logo-fallback.brand {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      box-shadow: 0 0 16px rgba(52,211,153,0.45);
+    }
+    .logo-fallback.brand::after {
+      inset: 7px;
+      border-radius: 8px;
     }
     .splash-title {
       font-size: 22px;
@@ -162,6 +188,13 @@
       flex-direction: column;
       gap: 4px;
     }
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: inherit;
+      text-decoration: none;
+    }
     .brand {
       font-size: 24px;
       font-weight: 800;
@@ -171,12 +204,14 @@
       align-items: center;
       gap: 8px;
     }
-    .brand span.logo-dot {
-      width: 22px;
-      height: 22px;
-      border-radius: 8px;
-      background: conic-gradient(from 180deg, #22c55e, #22c55e, #f97316, #facc15, #22c55e);
-      box-shadow: 0 0 25px rgba(52,211,153,0.75);
+    .brand-logo-img {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid rgba(148,163,184,0.4);
+      box-shadow: 0 0 16px rgba(52,211,153,0.45);
+      background: #0f172a;
       flex-shrink: 0;
     }
     .tagline {
@@ -629,7 +664,10 @@
   <div class="splash-backdrop" id="splash">
     <div class="splash-card">
       <div class="splash-inner">
-        <div class="splash-logo-dot"></div>
+        <a class="brand-link" href="https://postimg.cc/DSLRTB8m" target="_blank" rel="noopener" style="justify-content:center;">
+          <img class="splash-logo-img" id="splashLogo" src="" alt="IPO JSS logo" />
+          <span class="logo-fallback" id="splashLogoFallback" aria-hidden="true"></span>
+        </a>
         <div class="splash-title">IPO JSS</div>
         <div class="splash-tagline">Trade GMP , <span>Trade Smart</span></div>
         <div class="splash-sub">
@@ -646,10 +684,13 @@
 
   <header>
     <div class="brand-wrap">
-      <div class="brand">
-        <span class="logo-dot"></span>
-        <span>IPO JSS</span>
-      </div>
+      <a class="brand-link" href="https://postimg.cc/DSLRTB8m" target="_blank" rel="noopener">
+        <div class="brand">
+          <img class="brand-logo-img" id="headerLogo" src="" alt="IPO JSS logo" />
+          <span class="logo-fallback brand" id="headerLogoFallback" aria-hidden="true"></span>
+          <span>IPO JSS</span>
+        </div>
+      </a>
       <div class="tagline">
         Trade GMP , <span>Trade Smart</span>
       </div>
@@ -1322,6 +1363,22 @@
       renderCards();
     });
 
+    // --- Logo loader with fallback ---
+    // Using the provided filename; if it doesn't load, please replace with the exact "Copy image address" link from postimg (should start with https://i.postimg.cc/...)
+    const DIRECT_LOGO_SRC = "https://i.postimg.cc/DSLRTB8m/file-00000000ff4471fd807ff67a7c231bf8-(2).png";
+    function setLogo(imgEl, fallbackEl) {
+      if (!DIRECT_LOGO_SRC || DIRECT_LOGO_SRC.includes("postimg.cc/your-direct-image")) {
+        imgEl.style.display = "none";
+        fallbackEl.style.display = "inline-block";
+        return;
+      }
+      imgEl.src = DIRECT_LOGO_SRC;
+      imgEl.onload = () => { imgEl.style.display = "inline-block"; fallbackEl.style.display = "none"; };
+      imgEl.onerror = () => { imgEl.style.display = "none"; fallbackEl.style.display = "inline-block"; };
+    }
+    setLogo(document.getElementById("splashLogo"), document.getElementById("splashLogoFallback"));
+    setLogo(document.getElementById("headerLogo"), document.getElementById("headerLogoFallback"));
+
     updateCounts();
     renderCards();
 
@@ -1338,4 +1395,3 @@
   </script>
 </body>
 </html>
-
