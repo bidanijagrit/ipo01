@@ -31,6 +31,7 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: radial-gradient(circle at top left, #0b1120 0, #020617 45%, #000 100%);
       color: var(--text);
+      -webkit-font-smoothing: antialiased;
     }
 
     /* Splash Screen */
@@ -62,6 +63,8 @@
       box-shadow: 0 40px 90px rgba(15,23,42,0.95);
       position: relative;
       overflow: hidden;
+      max-width: 420px;
+      width: 92vw;
     }
     .splash-card::before {
       content: "";
@@ -113,6 +116,7 @@
       font-size: 12px;
       color: var(--muted);
       margin-bottom: 8px;
+      line-height: 1.45;
     }
     .splash-sub span {
       color: #bfdbfe;
@@ -173,6 +177,7 @@
       border-radius: 8px;
       background: conic-gradient(from 180deg, #22c55e, #22c55e, #f97316, #facc15, #22c55e);
       box-shadow: 0 0 25px rgba(52,211,153,0.75);
+      flex-shrink: 0;
     }
     .tagline {
       color: var(--muted);
@@ -236,11 +241,12 @@
     .search {
       position: relative;
       flex: 1 1 220px;
-      max-width: 280px;
+      max-width: 320px;
+      min-width: 180px;
     }
     .search input {
       width: 100%;
-      padding: 8px 30px 8px 10px;
+      padding: 9px 32px 9px 12px;
       border-radius: 999px;
       border: 1px solid rgba(148,163,184,0.4);
       background: rgba(15,23,42,0.9);
@@ -373,6 +379,8 @@
       align-items: center;
       font-size: 12px;
       margin-top: 6px;
+      gap: 6px;
+      flex-wrap: wrap;
     }
     .sub-row span.value {
       font-weight: 500;
@@ -401,7 +409,7 @@
       color: white;
       border: none;
       border-radius: 999px;
-      padding: 9px 12px;
+      padding: 10px 12px;
       font-weight: 700;
       font-size: 13px;
       cursor: pointer;
@@ -538,7 +546,7 @@
     .btn-secondary,
     .btn-primary-link {
       border-radius: 999px;
-      padding: 8px 12px;
+      padding: 9px 12px;
       font-size: 13px;
       font-weight: 600;
       border: 1px solid rgba(148,163,184,0.7);
@@ -550,6 +558,8 @@
       gap: 6px;
       cursor: pointer;
       transition: background 0.16s ease, border-color 0.16s ease, transform 0.12s ease;
+      width: 100%;
+      justify-content: center;
     }
     .btn-primary-link {
       background: linear-gradient(135deg, var(--primary), var(--primary-soft));
@@ -571,12 +581,46 @@
     }
     a { color: inherit; text-decoration: none; }
 
-    @media (max-width: 640px) {
-      header { padding: 14px 14px 8px; gap: 8px; }
-      .brand { font-size: 20px; }
-      .tagline { font-size: 11px; }
+    /* Mobile-first tweaks */
+    @media (max-width: 720px) {
+      header {
+        padding: 14px 14px 10px;
+        gap: 10px;
+      }
+      .brand { font-size: 21px; }
+      .tagline { font-size: 11.5px; letter-spacing: 0.1em; }
       main { padding: 14px 12px 26px; }
-      .modal-list { grid-template-columns: 1fr; }
+      .top-bar { flex-direction: column; align-items: stretch; gap: 10px; }
+      .filters { width: 100%; justify-content: space-between; }
+      .filter-btn { flex: 1; justify-content: center; padding: 8px 6px; font-size: 12.5px; }
+      .search { width: 100%; max-width: 100%; }
+      .grid { grid-template-columns: 1fr; gap: 14px; }
+      .card { padding: 12px 12px 11px; }
+      .title { font-size: 15px; }
+      .sub { font-size: 12px; }
+      .meta-grid { grid-template-columns: 1fr; gap: 8px; }
+      .sub-row { flex-direction: column; align-items: flex-start; }
+      .sub-row .value { font-size: 13px; }
+      .btn { padding: 11px 12px; font-size: 14px; }
+      .modal { max-width: 520px; padding: 16px 14px 14px; }
+      .modal h2 { font-size: 17px; }
+      .modal-list { grid-template-columns: 1fr; gap: 10px; }
+      .actions { flex-direction: column; }
+      .btn-primary-link, .btn-secondary { width: 100%; }
+      .splash-card { padding: 22px 22px 20px; }
+      .splash-title { font-size: 20px; }
+    }
+
+    @media (max-width: 480px) {
+      .brand { font-size: 19px; }
+      .tagline { font-size: 11px; letter-spacing: 0.08em; }
+      .pill, .chip, .subs-chip { font-size: 10.5px; }
+      .meta-label { font-size: 10px; }
+      .meta-grid { font-size: 12px; }
+      .gmp { font-size: 12.5px; }
+      .summary { font-size: 12px; }
+      .splash-title { font-size: 19px; letter-spacing: 0.1em; }
+      .splash-tagline { font-size: 11px; letter-spacing: 0.18em; }
     }
   </style>
 </head>
@@ -1289,8 +1333,9 @@
         setTimeout(() => {
           splash.style.display = "none";
         }, 800);
-      }, 1400); // Total ~2.2s before full hide+fade
+      }, 1400);
     });
   </script>
 </body>
 </html>
+
